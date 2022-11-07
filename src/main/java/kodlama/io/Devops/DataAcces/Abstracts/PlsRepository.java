@@ -1,20 +1,10 @@
 package kodlama.io.Devops.DataAcces.Abstracts;
 
-import java.util.List;
-
-
+import org.springframework.data.jpa.repository.JpaRepository;
 
 import kodlama.io.Devops.Entities.Concretes.ProgrammingLanguages;
 
 
-public interface PlsRepository {
-	void add(ProgrammingLanguages language);
-
-	List<ProgrammingLanguages> getAll();
-
-	ProgrammingLanguages getById(int id);
-
-	void delete(ProgrammingLanguages language);
-
-	void update(ProgrammingLanguages l1, String yeni);
+public interface PlsRepository extends JpaRepository<ProgrammingLanguages, Integer>{
+	
 }

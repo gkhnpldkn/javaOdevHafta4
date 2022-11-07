@@ -1,11 +1,16 @@
 package kodlama.io.Devops.Business.Concretes;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import kodlama.io.Devops.Business.Abstract.PlsService;
+import kodlama.io.Devops.Business.requests.CreateLanguageRequest;
+import kodlama.io.Devops.Business.requests.DeleteLanguageReq;
+import kodlama.io.Devops.Business.requests.UpdateLanguageReq;
+import kodlama.io.Devops.Business.response.GetAllLanguageResponse;
 import kodlama.io.Devops.DataAcces.Abstracts.PlsRepository;
 import kodlama.io.Devops.Entities.Concretes.ProgrammingLanguages;
 
@@ -20,39 +25,75 @@ public class PlsManager implements PlsService {
 	}
 
 	@Override
-	public void add(ProgrammingLanguages language) {
-
-		if (language.getName() != null) {
-			plsRepository.add(language);
-		} else {
-			System.out.println("lütfen ad kısmını boş bırakmayınız");
+	public void add(CreateLanguageRequest languageRequest) {
+		ProgrammingLanguages language = new ProgrammingLanguages();
+		language.setName(languageRequest.getName());
+		if (language.getName()== null) {
+			System.out.println("ad kısmı boş bırakılamaz");
+		}else {
+			this.plsRepository.save(language);
 		}
-
+		
+		
 	}
 
 	@Override
-	public List<ProgrammingLanguages> getAll() {
-		// TODO Auto-generated method stub
-		return plsRepository.getAll();
-
+	public List<GetAllLanguageResponse> getAll() {
+		
+		List<ProgrammingLanguages> languages= plsRepository.findAll();
+		List<GetAllLanguageResponse> responses = new ArrayList<>();
+		for (ProgrammingLanguages language : languages) {
+			GetAllLanguageResponse rsp = new GetAllLanguageResponse();
+			rsp.setName(language.getName());
+			rsp.setId(language.getId());
+			responses.add(rsp);
+		}
+		return responses;
 	}
 
 	@Override
-	public ProgrammingLanguages getById(int id) {
-		// TODO Auto-generated method stub
-		return plsRepository.getById(id);
+	public GetAllLanguageResponse getById(int id) {
+		GetAllLanguageResponse response ;
+		for (GetAllLanguageResponse languageResponse : getAll()) {
+			if (languageResponse.getId()== id) {
+				  ProgrammingLanguages language = this.plsRepository.findById(id).get();
+	               response = new GetAllLanguageResponse();
+	               response.setName(language.getName());
+	               return response;
+			}
+			
+		}
+		return null;
+		
 	}
 
 	@Override
-	public void delete(ProgrammingLanguages language) {
-		System.out.println(language.getName() + " silindi");
-
+	public void delete(DeleteLanguageReq languageRequest) {
+	for (GetAllLanguageResponse  getAllLanguageResponse : getAll()) {
+		if (languageRequest.getName()==getAllLanguageResponse.getName()) {
+			this.plsRepository.deleteById(languageRequest.getId());
+		}else {
+			System.out.println("dil algıalnamadı");
+		}
+	}
+		
 	}
 
 	@Override
-	public void update(ProgrammingLanguages l1, String yeni) {
-		System.out.println(l1.getName() + " güncellendi");
-
+	public void update(UpdateLanguageReq languageRequest) {
+		ProgrammingLanguages language;
+		for (GetAllLanguageResponse languageResponse : getAll()) {
+			if (languageRequest.getName()== languageResponse.getName()) {
+				language= new ProgrammingLanguages();
+				language.setName(languageRequest.getName());
+			}else {
+				System.out.println("dil algılanamadı");
+			}
+		}
+		
 	}
 
+
+
+	
 }

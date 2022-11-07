@@ -2,12 +2,15 @@ package kodlama.io.Devops.Business.Abstract;
 
 import java.util.List;
 
-import kodlama.io.Devops.Entities.Concretes.ProgrammingLanguages;
+import kodlama.io.Devops.Business.requests.CreateLanguageRequest;
+import kodlama.io.Devops.Business.requests.DeleteLanguageReq;
+import kodlama.io.Devops.Business.requests.UpdateLanguageReq;
+import kodlama.io.Devops.Business.response.GetAllLanguageResponse;
 
 public interface PlsService {
-	void add(ProgrammingLanguages language);
-List<ProgrammingLanguages> getAll();
-ProgrammingLanguages getById(int id);
-void delete(ProgrammingLanguages language);
-void update(ProgrammingLanguages l1,String yeni);
+	void add(CreateLanguageRequest languageRequest);
+List<GetAllLanguageResponse> getAll();
+GetAllLanguageResponse getById(int id);
+void delete(DeleteLanguageReq languageRequest);
+void update(UpdateLanguageReq languageRequest);
 }
