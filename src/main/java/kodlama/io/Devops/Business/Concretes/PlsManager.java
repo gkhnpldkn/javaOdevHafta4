@@ -3,6 +3,7 @@ package kodlama.io.Devops.Business.Concretes;
 import java.util.ArrayList;
 import java.util.List;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,19 +16,16 @@ import kodlama.io.Devops.DataAcces.Abstracts.PlsRepository;
 import kodlama.io.Devops.Entities.Concretes.ProgrammingLanguages;
 
 @Service
+@RequiredArgsConstructor
 public class PlsManager implements PlsService {
-	private PlsRepository plsRepository;
-
-	@Autowired
-	public PlsManager(PlsRepository plsRepository) {
-
-		this.plsRepository = plsRepository;
-	}
+	private final PlsRepository plsRepository;
 
 	@Override
 	public void add(CreateLanguageRequest languageRequest) {
-		ProgrammingLanguages language = new ProgrammingLanguages();
-		language.setName(languageRequest.getName());
+		ProgrammingLanguages language = ProgrammingLanguages.builder()
+				.name(languageRequest.getName())
+				.build();
+
 		if (language.getName()== null) {
 			System.out.println("ad kısmı boş bırakılamaz");
 		}else {
